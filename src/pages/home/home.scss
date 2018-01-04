@@ -1,0 +1,89 @@
+page-home {
+	.result-content {
+		background: transparent;
+		display:none;
+
+		&.enabled {
+			display:block;
+		}
+
+		.result-grid {
+			margin-top: 4rem;
+			padding:0;
+			.mag-cover {
+				p {
+					text-align: center;
+			    	margin: 5px 0 0 0;
+			    	font-size: 1rem;
+			    	color: #427feb;
+			    }
+			}
+			.products {
+				ion-col {
+					padding:0;
+				}
+				ion-card {
+					.product-brand-name {
+						padding: .5rem 0 0 0;
+					    display: inline-block;
+					    color: #427feb;
+					}
+					.product-name {
+						overflow: hidden;
+					    text-overflow: ellipsis;
+					    white-space: nowrap;
+					    margin: 0 .5rem;
+					}
+					.product-price {
+						font-size: 1.4rem;
+					    color: #427feb;
+					    text-align: right;
+					    width: 100%;
+					    display: inline-block;
+					    padding: 0 .5rem 0 0;
+					}
+				}
+			}
+		}
+	}
+
+	.sidemenu {
+		position:absolute;
+		padding: 1.8rem 4rem 4rem 1.6rem;
+		z-index:5;
+		background:transparent;
+		box-shadow:0 0 0 0;
+		ion-icon {
+			color: white;
+			font-size: 1.8em;
+		}
+	}
+
+	.take-picture {
+		position:absolute;
+		top:0;
+		width: 100%;
+		height: 100%;
+		background: transparent;
+	}
+
+	.preview {
+		position:absolute;
+		top:0;
+		width:100%;
+		height:100%;
+		background-size: contain;
+		transition: ease .2s opacity;
+		background: #000;
+		opacity:1;
+		display:none;
+
+		&.appearBlink {
+			display:block;
+		}
+		&.animBlink {
+			opacity:0;
+		}
+	}
+
+}

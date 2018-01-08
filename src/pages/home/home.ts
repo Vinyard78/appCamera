@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions } from '@ionic-native/camera-preview';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { ProductServiceProvider } from '../../providers/product-service/product-service';
@@ -25,16 +25,35 @@ export class HomePage {
 	private products: any;
 	private showResult: boolean;
 	private loader: any;
+	private showSlides: boolean;
 
 	constructor(
 		public navCtrl: NavController, 
 		private cameraPreview: CameraPreview, 
 		private fileTransfer: FileTransfer,
 		private productService: ProductServiceProvider,
-		private LoadingController: LoadingController
+		private LoadingController: LoadingController,
+		private alertController: AlertController
 	) {}
 
 	ionViewDidLoad() {
+
+		this.animBlink = false;
+		this.appearBlink = false;
+		this.showResult = false;
+		this.showSlides = false;
+
+		this.initFileTransfer();
+
+		this.initCameraPreview();
+
+	};
+
+	ionViewWillUnload() {
+		this.cameraPreview.stopCamera();
+	}
+
+	initFileTransfer():void {
 		this.apiUrl = encodeURI('http://visualbot.ai/api/visualsearch');
 
 		this.fileUploadOptions = {
@@ -46,7 +65,9 @@ export class HomePage {
 		};
 
 		this.fileTransferObject = this.fileTransfer.create();
+	}
 
+	initCameraPreview():void {
 		this.cameraPreviewOpts = {
 			x: 0,
 			y: 0,
@@ -56,36 +77,22 @@ export class HomePage {
 			toBack: true
 		};
 
-		this.cameraPreview.startCamera(this.cameraPreviewOpts).then(
-			(res) => {
-				console.log(res)
-			},
-			(err) => {
-				console.log(err)
-			}
-		);
-
-		this.cameraPreview.setFlashMode(this.cameraPreview.FLASH_MODE.AUTO);
-
 		this.pictureOpts = {
 			width: 640,
 			height: 640,
 			quality: 85
 		};
 
-		this.animBlink = false;
-		this.appearBlink = false;
-		this.showResult = false;
+		this.cameraPreview.setFlashMode(this.cameraPreview.FLASH_MODE.AUTO);
 
-		this.loader = this.LoadingController.create({
-			spinner:'dots',
-			cssClass: 'theme-spinner'
-	    });
-
-	};
-
-	ionViewWillUnload() {
-		this.cameraPreview.stopCamera();
+		this.cameraPreview.startCamera(this.cameraPreviewOpts).then(
+			(res) => {
+				console.log("startCameraSuccess: " + res)
+			},
+			(err) => {
+				console.log("startCameraError: " + err);
+			}
+		);
 	}
 
 	uploadFile(file): void {
@@ -97,19 +104,27 @@ export class HomePage {
 				if(data.response && data.response !== "[]") {
 					this.result = JSON.parse(data.response)[0];
 					console.dir(this.result);
+
+					if(this.result.summary.publication_id === 3075){
+						this.url_quote = "http://34.248.114.48\:3000/" + this.result.summary.url_quote;
+						this.journal_name = this.result.summary.journal_name;
+						this.page = this.result.summary.page;
+						this.getProducts(this.result.summary.publication_id, this.result.summary.page);
+						this.showResult = true;
+					} else {
+						this.showAlert();
+					}
+
+				} else {
+					this.showAlert();
 				}
-				if(this.result.summary.publication_id === 3075){
-					this.url_quote = "http://34.248.114.48\:3000/" + this.result.summary.url_quote;
-					this.journal_name = this.result.summary.journal_name;
-					this.page = this.result.summary.page;
-					this.getProducts(this.result.summary.publication_id, this.result.summary.page);
-					this.showResult = true;
-				}
+				
 			}, 
 			// upload fail
 			(err) => {
 				this.loader.dismiss();
-			    console.log(err);
+				this.showAlert();
+			    console.log("UploadFileError: " + err);
 			}
 		);
 	}
@@ -117,9 +132,40 @@ export class HomePage {
 	getProducts(magNum, page): void {
 		this.productService.getProductsFromPage(magNum, page).subscribe((data)=>{
 			this.products = data;
+			setTimeout(()=>{
+				this.showSlides = true;
+			},1000);
 			console.dir(data);
 		});
 	}
+
+	presentLoader():void {
+		this.loader = this.LoadingController.create({
+			spinner:'dots',
+			cssClass: 'theme-spinner'
+	    });
+		this.loader.present();
+	}
+
+	showAlert():void {
+    	let alert = this.alertController.create({
+      		title: 'Oops!',
+      		subTitle: 'Désolé, nous ne reconnaissons pas ce produit.',
+      		buttons: ['OK'],
+      		cssClass: "camera-error-alert"
+    	});
+    	alert.present();
+  	}
+
+  	clear():void {
+  		this.showResult = false;
+  		this.showSlides = false;
+  		this.url_quote = "";
+  		this.journal_name = "";
+  		this.page = "";
+  		this.products = null;
+
+  	}
 
 	takePicture(): void {
 		this.appearBlink = true;
@@ -132,11 +178,12 @@ export class HomePage {
 		},30);
 		this.fileTransferObject.abort();
 		this.cameraPreview.takePicture(this.pictureOpts).then((imageData) => {
-			this.loader.present();
+			this.presentLoader();
 			this.picture = 'data:image/jpeg;base64,' + imageData;
 			this.uploadFile(this.picture);
 		}, (err) => {
-			console.log(err);
+			console.log("CameraTakePictureError: " + err);
+			this.showAlert();
 		});
 
 	}

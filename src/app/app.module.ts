@@ -11,11 +11,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ProductServiceProvider } from '../providers/product-service/product-service';
+import { AnimOnLoadDirective } from '../directives/animOnLoad.directive';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    AnimOnLoadDirective
   ],
   imports: [
     BrowserModule,

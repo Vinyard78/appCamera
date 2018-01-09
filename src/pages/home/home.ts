@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions } from '@ionic-native/camera-preview';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { ProductServiceProvider } from '../../providers/product-service/product-service';
+import { ProductModal } from '../../modals/product.modal';
 
 @Component({
 	selector: 'page-home',
@@ -26,6 +27,7 @@ export class HomePage {
 	private showResult: boolean;
 	private loader: any;
 	private showSlides: boolean;
+	private productModal: any;
 
 	constructor(
 		public navCtrl: NavController, 
@@ -33,7 +35,8 @@ export class HomePage {
 		private fileTransfer: FileTransfer,
 		private productService: ProductServiceProvider,
 		private LoadingController: LoadingController,
-		private alertController: AlertController
+		private alertController: AlertController,
+		private modalController: ModalController
 	) {}
 
 	ionViewDidLoad() {
@@ -42,6 +45,7 @@ export class HomePage {
 		this.appearBlink = false;
 		this.showResult = false;
 		this.showSlides = false;
+		this.productModal = ProductModal;
 
 		this.initFileTransfer();
 
@@ -134,13 +138,14 @@ export class HomePage {
 			this.products = data;
 			setTimeout(()=>{
 				this.showSlides = true;
-			},1000);
+			},500);
 			console.dir(data);
 		});
 	}
 
 	presentLoader():void {
 		this.loader = this.LoadingController.create({
+			content: "Recherche en cours",
 			spinner:'dots',
 			cssClass: 'theme-spinner'
 	    });
@@ -167,24 +172,35 @@ export class HomePage {
 
   	}
 
+  	openProduct():void {
+	    let modal = this.modalController.create(this.productModal);
+	    modal.present();
+  	}
+
 	takePicture(): void {
-		this.appearBlink = true;
-		setTimeout(()=>{
-			this.animBlink = true;
+		if(this.showResult){
+			this.clear();
+		} else {
+			// Effet de clignotement de l'ecran quand on prend une photo
+			this.appearBlink = true;
 			setTimeout(()=>{
-				this.animBlink = false;
-				this.appearBlink = false;
-			},200);
-		},30);
-		this.fileTransferObject.abort();
-		this.cameraPreview.takePicture(this.pictureOpts).then((imageData) => {
-			this.presentLoader();
-			this.picture = 'data:image/jpeg;base64,' + imageData;
-			this.uploadFile(this.picture);
-		}, (err) => {
-			console.log("CameraTakePictureError: " + err);
-			this.showAlert();
-		});
+				this.animBlink = true;
+				setTimeout(()=>{
+					this.animBlink = false;
+					this.appearBlink = false;
+				},200);
+			},30);
+
+			this.fileTransferObject.abort();
+			this.cameraPreview.takePicture(this.pictureOpts).then((imageData) => {
+				this.presentLoader();
+				this.picture = 'data:image/jpeg;base64,' + imageData;
+				this.uploadFile(this.picture);
+			}, (err) => {
+				console.log("CameraTakePictureError: " + err);
+				this.showAlert();
+			});
+		}
 
 	}
 

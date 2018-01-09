@@ -12,12 +12,14 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ProductServiceProvider } from '../providers/product-service/product-service';
 import { AnimOnLoadDirective } from '../directives/animOnLoad.directive';
+import { ProductModal } from '../modals/product.modal';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    AnimOnLoadDirective
+    AnimOnLoadDirective,
+    ProductModal
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,8 @@ import { AnimOnLoadDirective } from '../directives/animOnLoad.directive';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    ProductModal
   ],
   providers: [
     StatusBar,

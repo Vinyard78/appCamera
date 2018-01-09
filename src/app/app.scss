@@ -29,6 +29,18 @@ html, body, ion-app, .ion-app, .ion-content {
 		transform: scale(2) !important;
 	    background: transparent;
 	    box-shadow: none;
+	    text-align: center;
+
+	    .loading-content {
+	    	color: white;
+		    margin: -2rem 0 0 0;
+		    font-size: 1rem;
+		    position: absolute;
+		    left: 50%;
+		    display: inline-block;
+		    transform: translate(-50%);
+		    width: 12rem;
+	    }
 	}
 }
 

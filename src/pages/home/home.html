@@ -1,6 +1,9 @@
-<button class="sidemenu"  menuToggle>
-  <ion-icon name="menu"></ion-icon>
+<button class="sidemenu" menuToggle>
+  <ion-icon name="cart"></ion-icon>
 </button>
+<ion-card >
+	<img app-anim-on-load [src]="'assets/imgs/conseils.png'">
+</ion-card>
 
 <!--<div class="take-picture" (click)="takePicture()"></div>-->
 <div class="preview" [ngClass]="{ 'animBlink': animBlink, 'appearBlink' : appearBlink }" ></div>
@@ -23,25 +26,31 @@
 	  </ion-row>
 	  <ion-row class="products">
 	    <ion-col col-12 >
-	    	<ion-slides *ngIf="products" effect="coverflow" centeredSlides="true" spaceBetween="20" slidesPerView="2" [ngClass]="{'show':showSlides}">
-			  <ion-slide *ngFor="let product of products.results">
-			  	<ion-card *ngIf="page < 100" (click)="openProduct(page < 100)">
+	    	<ion-slides *ngIf="products && page < 100" effect="coverflow" centeredSlides="true" spaceBetween="20" slidesPerView="2" [ngClass]="{'show':showSlides}">
+			  <ion-slide *ngFor="let product of products.results; let i = index">
+			  	<ion-card *ngIf="page < 100" (click)="openProduct(page < 100, i)">
 			  		<span class="product-brand-name">{{product.brand.name}}</span>
 					<p class="product-name">{{product.name}}</p>
 			    	<img  app-anim-on-load class="product-img" [src]="'http://34.248.114.48\:3000/' + product.images[0]">
 			    	<span class="product-price">{{product.price != 0 ? product.price + "€" : " "}}</span>
 				</ion-card>
-				<ion-card *ngIf="page > 100 && product.video" class="card-video">
-			    	<iframe [src]="product.video | safeUrl" width="100%" frameborder="0" allowfullscreen></iframe>
+			  </ion-slide>
+			</ion-slides>
+
+			<ion-slides *ngIf="more && page > 100" effect="coverflow" centeredSlides="true" spaceBetween="20" slidesPerView="2" [ngClass]="{'show':showSlides}">
+			  <ion-slide *ngFor="let item of more[0]">
+				<ion-card *ngIf="item.video" class="card-video">
+			    	<iframe [src]="item.video | safeUrl" width="100%" frameborder="0" allowfullscreen></iframe>
 				</ion-card>
-				<ion-card *ngIf="page > 100 && product.recette" (click)="openUrl(product.recette)">
-					<img app-anim-on-load [src]="">
+				<ion-card *ngIf="item.recette" (click)="openUrl(item.recette)">
+					<img app-anim-on-load [src]="'assets/imgs/recette.png'">
 				</ion-card>
-				<ion-card *ngIf="page > 100 && product.conseil" (click)="openUrl(product.conseil)">
-					<img app-anim-on-load [src]="">
+				<ion-card *ngIf="item.conseil" (click)="openUrl(item.conseil)">
+					<img app-anim-on-load [src]="'assets/imgs/conseils.png'">
 				</ion-card>
 			  </ion-slide>
 			</ion-slides>
+
 	    </ion-col>
 	  </ion-row>
 	</ion-grid>

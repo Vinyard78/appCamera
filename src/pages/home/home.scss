@@ -69,8 +69,9 @@ page-home {
 
 	.sidemenu {
 		position:absolute;
-		padding: 1.8rem 4rem 4rem 1.6rem;
+		padding: 1.8rem 1.6rem 4rem 4rem;
 		z-index:5;
+		right:0;
 		background:transparent;
 		box-shadow:0 0 0 0;
 		ion-icon {

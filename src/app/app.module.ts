@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { CameraPreview } from '@ionic-native/camera-preview';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { NativeStorage } from '@ionic-native/native-storage';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { HttpClientModule } from '@angular/common/http';
@@ -40,6 +41,7 @@ import { SafeUrlPipe } from '../pipes/safeUrlPipe';
     SplashScreen,
     CameraPreview,
     InAppBrowser,
+    NativeStorage,
     FileTransfer,
     File,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

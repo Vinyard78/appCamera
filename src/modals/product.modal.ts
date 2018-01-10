@@ -6,13 +6,15 @@ import { NavParams, ViewController } from 'ionic-angular';
   templateUrl: 'product.modal.html'
 })
 export class ProductModal {
-  character;
 
   constructor(
     //public platform: Platform,
     private params: NavParams,
     private viewController: ViewController
   ) {
+
+    console.dir(this.params);
+
     /*var characters = [
       {
         name: 'Gollum',

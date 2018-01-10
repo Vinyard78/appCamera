@@ -25,6 +25,7 @@ export class HomePage {
 	private journal_name: string;
 	private page: number;
 	private products: any;
+	private more: any[];
 	private showResult: boolean;
 	private loader: any;
 	private showSlides: boolean;
@@ -114,27 +115,40 @@ export class HomePage {
 					if(this.result.summary.publication_id === 3075){
 
 						/////
-						this.result.summary.plus = [
-							{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
-							//{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
-							{conseil:"http://www.laboulangere.com/ingredients/"}
+						this.more = [
+							[
+								{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
+								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
+								{conseil:"http://www.laboulangere.com/ingredients/"}
+							],
+							[
+								{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
+								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
+								{conseil:"http://www.laboulangere.com/ingredients/"}
+							],
+							[
+								{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
+								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
+								{conseil:"http://www.laboulangere.com/ingredients/"}
+							],
+							[
+								{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
+								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
+								{conseil:"http://www.laboulangere.com/ingredients/"}
+							]
 						]
+						/*
+							this.more = this.result.summary.more;
+						*/
 						/////
+						
 
 						this.url_quote = "http://34.248.114.48\:3000/" + this.result.summary.url_quote;
 						this.journal_name = this.result.summary.journal_name;
 						this.page = this.result.summary.page;
-						if(this.page < 100){
-							this.getProducts(this.result.summary.publication_id, this.result.summary.page);
-						} else {
-							this.products = {
-								results: this.result.summary.plus ? this.result.summary.plus : []
-							};
-							setTimeout(()=>{
-								this.showSlides = true;
-							},500);
-						}
-						
+					
+						this.getProducts(this.result.summary.publication_id, this.result.summary.page);
+
 						this.showResult = true;
 					} else {
 						this.showAlert();
@@ -190,12 +204,15 @@ export class HomePage {
   		this.journal_name = "";
   		this.page = 0;
   		this.products = null;
+  		this.more = null;
 
   	}
 
-  	openProduct(isOk: boolean):void {
-  		if(isOk){
-  			let modal = this.modalController.create(this.productModal);
+  	openProduct(isOk: boolean, index):void {
+  		if(isOk && this.products && this.products.results){
+  			if(!index) index = 0;
+  			if(this.more) this.products.results[index].more = this.more[index];
+  			let modal = this.modalController.create(this.productModal, this.products.results[index]);
 	   		modal.present();
   		}
   	}

@@ -4,6 +4,7 @@ import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions } from
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { ProductServiceProvider } from '../../providers/product-service/product-service';
 import { ProductModal } from '../../modals/product.modal';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @Component({
 	selector: 'page-home',
@@ -22,7 +23,7 @@ export class HomePage {
 	private result: any;
 	private url_quote: string;
 	private journal_name: string;
-	private page: string;
+	private page: number;
 	private products: any;
 	private showResult: boolean;
 	private loader: any;
@@ -36,7 +37,8 @@ export class HomePage {
 		private productService: ProductServiceProvider,
 		private LoadingController: LoadingController,
 		private alertController: AlertController,
-		private modalController: ModalController
+		private modalController: ModalController,
+		private inAppBrowser: InAppBrowser
 	) {}
 
 	ionViewDidLoad() {
@@ -110,10 +112,29 @@ export class HomePage {
 					console.dir(this.result);
 
 					if(this.result.summary.publication_id === 3075){
+
+						/////
+						this.result.summary.plus = [
+							{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
+							//{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
+							{conseil:"http://www.laboulangere.com/ingredients/"}
+						]
+						/////
+
 						this.url_quote = "http://34.248.114.48\:3000/" + this.result.summary.url_quote;
 						this.journal_name = this.result.summary.journal_name;
 						this.page = this.result.summary.page;
-						this.getProducts(this.result.summary.publication_id, this.result.summary.page);
+						if(this.page < 100){
+							this.getProducts(this.result.summary.publication_id, this.result.summary.page);
+						} else {
+							this.products = {
+								results: this.result.summary.plus ? this.result.summary.plus : []
+							};
+							setTimeout(()=>{
+								this.showSlides = true;
+							},500);
+						}
+						
 						this.showResult = true;
 					} else {
 						this.showAlert();
@@ -167,14 +188,21 @@ export class HomePage {
   		this.showSlides = false;
   		this.url_quote = "";
   		this.journal_name = "";
-  		this.page = "";
+  		this.page = 0;
   		this.products = null;
 
   	}
 
-  	openProduct():void {
-	    let modal = this.modalController.create(this.productModal);
-	    modal.present();
+  	openProduct(isOk: boolean):void {
+  		if(isOk){
+  			let modal = this.modalController.create(this.productModal);
+	   		modal.present();
+  		}
+  	}
+
+  	openUrl(url):void {
+  		let browser = this.inAppBrowser.create(url);
+  		browser.show();
   	}
 
 	takePicture(): void {

@@ -13,8 +13,8 @@
 	<ion-grid class="result-grid">
 	  <ion-row class="mag-cover">
 	    <ion-col col-6 offset-3>
-	    	<ion-card *ngIf="url_quote" (click)="openProduct()">
-	    	  	<p>
+	    	<ion-card *ngIf="url_quote" (click)="openProduct(page > 100)">
+	    	  	<p *ngIf="page < 100">
 			    	{{journal_name + " page " + page}}
 			  	</p>
 			  	<img [src]="url_quote" app-anim-on-load/>
@@ -25,11 +25,20 @@
 	    <ion-col col-12 >
 	    	<ion-slides *ngIf="products" effect="coverflow" centeredSlides="true" spaceBetween="20" slidesPerView="2" [ngClass]="{'show':showSlides}">
 			  <ion-slide *ngFor="let product of products.results">
-			  	<ion-card>
+			  	<ion-card *ngIf="page < 100" (click)="openProduct(page < 100)">
 			  		<span class="product-brand-name">{{product.brand.name}}</span>
 					<p class="product-name">{{product.name}}</p>
-			    	<img app-anim-on-load class="product-img" [src]="'http://34.248.114.48\:3000/' + product.images[0]">
+			    	<img  app-anim-on-load class="product-img" [src]="'http://34.248.114.48\:3000/' + product.images[0]">
 			    	<span class="product-price">{{product.price != 0 ? product.price + "€" : " "}}</span>
+				</ion-card>
+				<ion-card *ngIf="page > 100 && product.video" class="card-video">
+			    	<iframe [src]="product.video | safeUrl" width="100%" frameborder="0" allowfullscreen></iframe>
+				</ion-card>
+				<ion-card *ngIf="page > 100 && product.recette" (click)="openUrl(product.recette)">
+					<img app-anim-on-load [src]="">
+				</ion-card>
+				<ion-card *ngIf="page > 100 && product.conseil" (click)="openUrl(product.conseil)">
+					<img app-anim-on-load [src]="">
 				</ion-card>
 			  </ion-slide>
 			</ion-slides>

@@ -112,7 +112,7 @@ export class HomePage {
 					this.result = JSON.parse(data.response)[0];
 					console.dir(this.result);
 
-					if(this.result.summary.publication_id === 3075){
+					if(this.result.summary.publication_id === 3075 || this.result.summary.publication_id === 3085){
 
 						/////
 						/*this.more = [

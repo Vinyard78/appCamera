@@ -44,6 +44,9 @@
                 <ion-card *ngIf="item.conseil" (click)="openUrl(item.conseil)">
                     <img app-anim-on-load [src]="'assets/imgs/conseils.png'">
                 </ion-card>
+                <ion-card *ngIf="item.ooshop" (click)="openUrl(item.ooshop)">
+                    <img app-anim-on-load [src]="'assets/imgs/ooshop.png'">
+                </ion-card>
             </ion-slide>
         </ion-slides>
     </ion-card>

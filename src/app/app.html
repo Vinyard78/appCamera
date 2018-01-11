@@ -8,11 +8,11 @@
   <ion-content>
   	<ion-list *ngIf="productsList">
 	  <ion-item *ngFor="let product of productsList">
-	    <ion-thumbnail item-start>
+	    <ion-thumbnail item-start (click)="openUrl(product)">
 	      <img app-anim-on-load [src]="'http://34.248.114.48\:3000/' + product.images[0]">
 	    </ion-thumbnail>
-	    <h2>{{product.brand.name}}</h2>
-	    <p>{{product.name}}</p>
+	    <h2 (click)="openUrl(product)">{{product.brand.name}}</h2>
+	    <p (click)="openUrl(product)">{{product.name}}</p>
 	    <button ion-button clear item-end icon-only (click)="removeProductFromList(product)">
 	    	<ion-icon name="close"></ion-icon>
 	    </button>

@@ -35,9 +35,11 @@ export class MyApp {
     this.productService.removeFromProductsList(product);
   }
 
-  openUrl(url):void {
-    let browser = this.inAppBrowser.create(url);
-    browser.show();
+  openUrl(product):void {
+    if(product.more && product.more.ooshop){
+      let browser = this.inAppBrowser.create(product.more.ooshop);
+      browser.show();
+    }
   }
 
 

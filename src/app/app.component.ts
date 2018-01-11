@@ -6,11 +6,12 @@ import { ProductServiceProvider } from '../providers/product-service/product-ser
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { HomePage } from '../pages/home/home';
+import { OnBoardingPage } from '../pages/on-boarding/on-boarding';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = HomePage;
+  rootPage:any = OnBoardingPage;
   productsList: any[];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private inAppBrowser: InAppBrowser, private productService:ProductServiceProvider ) {

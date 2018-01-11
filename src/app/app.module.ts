@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { OnBoardingPage } from '../pages/on-boarding/on-boarding';
+
 import { ProductServiceProvider } from '../providers/product-service/product-service';
 import { AnimOnLoadDirective } from '../directives/animOnLoad.directive';
 import { ProductModal } from '../modals/product.modal';
@@ -21,6 +23,7 @@ import { SafeUrlPipe } from '../pipes/safeUrlPipe';
   declarations: [
     MyApp,
     HomePage,
+    OnBoardingPage,
     AnimOnLoadDirective,
     ProductModal,
     SafeUrlPipe
@@ -34,6 +37,7 @@ import { SafeUrlPipe } from '../pipes/safeUrlPipe';
   entryComponents: [
     MyApp,
     HomePage,
+    OnBoardingPage,
     ProductModal
   ],
   providers: [

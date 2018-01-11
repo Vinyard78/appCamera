@@ -115,7 +115,7 @@ export class HomePage {
 					if(this.result.summary.publication_id === 3075){
 
 						/////
-						this.more = [
+						/*this.more = [
 							[
 								{video:"https://www.youtube.com/embed/NNRJYeLmET8"},
 								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
@@ -136,10 +136,10 @@ export class HomePage {
 								{recette:"http://www.laboulangere.com/recette/brioche-aux-figues/"},
 								{conseil:"http://www.laboulangere.com/ingredients/"}
 							]
-						]
-						/*
+						]*/
+						
 							this.more = this.result.summary.more;
-						*/
+						
 						/////
 						
 

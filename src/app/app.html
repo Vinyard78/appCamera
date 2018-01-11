@@ -6,14 +6,16 @@
   </ion-header>
 
   <ion-content>
-  	<ion-list>
-	  <ion-item >
+  	<ion-list *ngIf="productsList">
+	  <ion-item *ngFor="let product of productsList">
 	    <ion-thumbnail item-start>
-	      <img >
+	      <img app-anim-on-load [src]="'http://34.248.114.48\:3000/' + product.images[0]">
 	    </ion-thumbnail>
-	    <h2></h2>
-	    <p></p>
-	    <button ion-button clear item-end>View</button>
+	    <h2>{{product.brand.name}}</h2>
+	    <p>{{product.name}}</p>
+	    <button ion-button clear item-end icon-only (click)="removeProductFromList(product)">
+	    	<ion-icon name="close"></ion-icon>
+	    </button>
 	  </ion-item>
 	</ion-list>
   	

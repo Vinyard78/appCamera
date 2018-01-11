@@ -1,3 +1,50 @@
 product-modal {
-	background: blue;
+	.dismiss-button {
+	    border-radius: 5rem;
+	    height: 4rem;
+	    width: 4rem;
+	    right: .5rem;
+	    top: .5rem;
+	    position: absolute;
+	}
+	.product-img {
+	    margin-top: 6rem;
+	    max-height: 30rem;
+	    width: auto;
+	    margin-left: 50%;
+	    transform: translate3d(-50%,0,0);
+	}
+	.product-name {
+		h2 {
+			color: #488aff;
+		}
+	}
+	.add-button{
+		position: absolute;
+	    font-size: 4.3rem;
+	    height: 4rem;
+	    width: 4rem;
+	    color: #ed1e24;
+	    padding: 0;
+	    margin: 0;
+	    border-radius: 5rem;
+	    background: transparent !important;
+	    right: 3rem;
+	    z-index: 5;
+	}
+	.product-price {
+		font-size: 2rem;
+	}
+	.product-description {
+		h2 {
+			color: #488aff;
+    		font-weight: 800;
+		}
+	}
+	.product-more {
+		h2 {
+			color: #488aff;
+    		font-weight: 800;
+		}
+	}
 }

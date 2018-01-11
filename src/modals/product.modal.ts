@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
+import { ProductServiceProvider } from '../providers/product-service/product-service';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ToastController } from 'ionic-angular';
 
 @Component({
 	selector: 'product-modal',
@@ -7,50 +10,39 @@ import { NavParams, ViewController } from 'ionic-angular';
 })
 export class ProductModal {
 
+  private product:any;
+
   constructor(
-    //public platform: Platform,
     private params: NavParams,
-    private viewController: ViewController
+    private viewController: ViewController,
+    private productService: ProductServiceProvider,
+    private inAppBrowser: InAppBrowser,
+    private toastController: ToastController
   ) {
-
     console.dir(this.params);
-
-    /*var characters = [
-      {
-        name: 'Gollum',
-        quote: 'Sneaky little hobbitses!',
-        image: 'assets/img/avatar-gollum.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'River Folk' },
-          { title: 'Alter Ego', note: 'Smeagol' }
-        ]
-      },
-      {
-        name: 'Frodo',
-        quote: 'Go back, Sam! I\'m going to Mordor alone!',
-        image: 'assets/img/avatar-frodo.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'Shire Folk' },
-          { title: 'Weapon', note: 'Sting' }
-        ]
-      },
-      {
-        name: 'Samwise Gamgee',
-        quote: 'What we need is a few good taters.',
-        image: 'assets/img/avatar-samwise.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'Shire Folk' },
-          { title: 'Nickname', note: 'Sam' }
-        ]
-      }
-    ];
-    this.character = characters[this.params.get('charNum')];*/
+    this.product = this.params.data;
   }
 
   dismiss() {
     this.viewController.dismiss();
   }
+
+  addProduct() {
+    this.productService.pushInProductsList(this.product);
+    this.presentToast();
+  }
+
+  openUrl(url):void {
+    let browser = this.inAppBrowser.create(url);
+    browser.show();
+  }
+
+  presentToast() {
+    let toast = this.toastController.create({
+      message: 'Votre produit a bien été ajouté dans la liste de course',
+      duration: 3000
+    });
+    toast.present();
+  }
+
 }

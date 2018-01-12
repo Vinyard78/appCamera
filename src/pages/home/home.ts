@@ -218,7 +218,8 @@ export class HomePage {
   	}
 
   	openUrl(url):void {
-  		let browser = this.inAppBrowser.create(url);
+  		let browser = this.inAppBrowser.create(url,"_self",{hardwareback:'no'});
+  		//let browser = this.inAppBrowser.create(url);
   		browser.show();
   	}
 
